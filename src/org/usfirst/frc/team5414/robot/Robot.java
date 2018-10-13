@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team5414.robot.subsystems.Arm;
 import org.usfirst.frc.team5414.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team5414.robot.subsystems.ExampleSubsystem;
 
@@ -22,7 +24,7 @@ public class Robot extends TimedRobot {
 	
 	public static OI oi;
 	public static Drivetrain drivetrain;
-	
+	public static Arm arm;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -30,8 +32,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		oi = new OI();
 		drivetrain = new Drivetrain();
+		arm = new Arm();
+		oi = new OI();
 	}
 
 	/**
@@ -93,7 +96,11 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		double forwardJoystick = oi.joystick.getRawAxis(1);
 		double rotateJoystick = oi.joystick.getRawAxis(2);
-		drivetrain.driveWithJoystick(forwardJoystick, rotateJoystick);
+		if(Math.abs(forwardJoystick)<.15) {
+			forwardJoystick = 0;
+		}
+		drivetrain.driveWithJoystick(forwardJoystick/2., rotateJoystick/3.);
+		
 		
 		
 	}

@@ -7,7 +7,12 @@
 
 package org.usfirst.frc.team5414.robot;
 
+import org.usfirst.frc.team5414.robot.commands.ArmDownManual;
+import org.usfirst.frc.team5414.robot.commands.ArmUpManual;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,6 +21,15 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
 	
 	Joystick joystick = new Joystick(0);
+	Button btn8 = new JoystickButton(joystick, 8);
+	Button btn7 = new JoystickButton(joystick, 7);
+	
+	public OI() {
+		btn8.whileHeld(new ArmUpManual());
+		btn7.whileHeld(new ArmDownManual());
+		
+	}
+	
 	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
