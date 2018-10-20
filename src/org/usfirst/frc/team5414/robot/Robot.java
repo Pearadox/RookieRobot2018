@@ -51,7 +51,14 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		drivetrain.driveWithJoystick(0,0);
+		double angle = Robot.arm.getAngle();
+		SmartDashboard.putNumber("armAngle", angle);
+		double voltage = Robot.arm.getVoltage();
+		SmartDashboard.putNumber("armVoltage", voltage);
+		
 	}
+	
+	
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
@@ -100,6 +107,11 @@ public class Robot extends TimedRobot {
 			forwardJoystick = 0;
 		}
 		drivetrain.driveWithJoystick(forwardJoystick/2., rotateJoystick/3.);
+		double angle = Robot.arm.getAngle();
+		SmartDashboard.putNumber("armAngle", angle);
+		
+		double holdingOutput = Robot.arm.getHoldingOutput();
+	    SmartDashboard.putNumber("armOutput", holdingOutput);
 		
 		
 		
