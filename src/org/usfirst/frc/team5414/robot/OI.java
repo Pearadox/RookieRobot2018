@@ -8,7 +8,12 @@
 package org.usfirst.frc.team5414.robot;
 
 import org.usfirst.frc.team5414.robot.commands.ArmDownManual;
+import org.usfirst.frc.team5414.robot.commands.ArmHold;
+import org.usfirst.frc.team5414.robot.commands.ArmSetAngle;
 import org.usfirst.frc.team5414.robot.commands.ArmUpManual;
+import org.usfirst.frc.team5414.robot.commands.PincherClose;
+import org.usfirst.frc.team5414.robot.commands.PincherOpen;
+import org.usfirst.frc.team5414.robot.commands.PincherToggle;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -21,12 +26,29 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	
 	Joystick joystick = new Joystick(0);
-	Button btn8 = new JoystickButton(joystick, 8);
+	Button btn1 = new JoystickButton(joystick, 1);
+	Button btn3 = new JoystickButton(joystick, 3);
+	Button btn4 = new JoystickButton(joystick, 4);
+	Button btn6 = new JoystickButton(joystick, 6);
 	Button btn7 = new JoystickButton(joystick, 7);
+	Button btn8 = new JoystickButton(joystick, 8);
+	Button btn11 = new JoystickButton(joystick, 11);
+	Button btn12 = new JoystickButton(joystick, 12);
 	
 	public OI() {
-		btn8.whileHeld(new ArmUpManual());
+		btn1.whenPressed(new PincherToggle());
+		
+		btn3.whenPressed(new ArmSetAngle(43));
+		
+		btn4.whenPressed(new ArmSetAngle(90));
+		
 		btn7.whileHeld(new ArmDownManual());
+		btn7.whenReleased(new ArmHold());
+		
+		btn8.whileHeld(new ArmUpManual());
+		btn8.whenReleased(new ArmHold()); 
+
+		btn6.whenPressed(new ArmSetAngle(135));
 		
 	}
 	

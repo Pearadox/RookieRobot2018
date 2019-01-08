@@ -7,24 +7,35 @@
 
 package org.usfirst.frc.team5414.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team5414.robot.commands.DriveDistanceEncoder;
+import org.usfirst.frc.team5414.robot.commands.DriveDistanceGyro;
+import org.usfirst.frc.team5414.robot.commands.DriveTimed;
+import org.usfirst.frc.team5414.robot.commands.TurnEncoder;
 import org.usfirst.frc.team5414.robot.subsystems.Arm;
 import org.usfirst.frc.team5414.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team5414.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team5414.robot.subsystems.IMU;
 
 public class Robot extends TimedRobot {
 
-	Command m_autonomousCommand;
+	Command autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	
+	public static Preferences prefs;
 	
 	public static OI oi;
 	public static Drivetrain drivetrain;
 	public static Arm arm;
+	public static Compressor compressor;
+	public static IMU gyro;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -32,9 +43,15 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		prefs = Preferences.getInstance();
 		drivetrain = new Drivetrain();
 		arm = new Arm();
+		gyro = new IMU();
 		oi = new OI();
+		compressor = new Compressor(0);
+		
+		
+		compressor.start();
 	}
 
 	/**
@@ -55,28 +72,20 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("armAngle", angle);
 		double voltage = Robot.arm.getVoltage();
 		SmartDashboard.putNumber("armVoltage", voltage);
-		
+		SmartDashboard.putNumber("getLeftEncoder", Robot.drivetrain.getLeftEncoder());
+		SmartDashboard.putNumber("getRightEncoder", Robot.drivetrain.getRightEncoder());
+		SmartDashboard.putNumber("getLeftEncoderInches", Robot.drivetrain.getLeftEncoderInches());
+		SmartDashboard.putNumber("getRightEncoderInches", Robot.drivetrain.getRightEncoderInches());
+		SmartDashboard.putNumber("Yaw",gyro.getYaw());
+		SmartDashboard.putNumber("getYawEncoder", Robot.drivetrain.getYawEncoder());
 	}
 	
-	
-
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * <p>You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
-	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
-
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		//autonomousCommand = new DriveDistanceEncoder(144);
+		autonomousCommand = new TurnEncoder(90);
+		if (autonomousCommand != null) {
+			autonomousCommand.start();
 		}
 	}
 
@@ -90,8 +99,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
 		}
 	}
 

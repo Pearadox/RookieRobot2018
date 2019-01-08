@@ -24,7 +24,7 @@ public class ArmDownManual extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.arm.setSpeed(-.1);
+    	Robot.arm.setSpeed(-.375+Robot.arm.getHoldingOutput());
     }
 
     // Make this return true when this Command no longer needs to run execute()

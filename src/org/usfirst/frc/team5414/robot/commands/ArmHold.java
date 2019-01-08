@@ -7,23 +7,22 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ArmUpManual extends Command {
+public class ArmHold extends Command {
 
-    public ArmUpManual() {
+    public ArmHold() {
     	requires(Robot.arm);
-    	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.arm.setSpeed(.35+Robot.arm.getHoldingOutput());
+    	Robot.arm.setSpeed(Robot.arm.getHoldingOutput());
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,7 +32,6 @@ public class ArmUpManual extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.arm.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
